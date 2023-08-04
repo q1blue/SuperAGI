@@ -171,12 +171,16 @@ export default function AgentCreate({
           setLocalStorageValue("agent_iterations_" + String(internalId), data.max_iterations, setIterations);
           setLocalStorageValue("agent_step_time_" + String(internalId), data.iteration_interval, setStepTime);
           setLocalStorageValue("agent_permission_" + String(internalId), data.permission_type, setPermission);
-          setLocalStorageArray("agent_instructions_" + String(internalId), data.instruction, setInstructions);
+          setLocalStorageArray("agent_instructions_" + String(internalId), data.instruction ? data.instruction : [''], setInstructions);
           setLocalStorageValue("agent_database_" + String(internalId), data.LTM_DB, setDatabase);
           setLocalStorageValue("agent_model_" + String(internalId), data.model, setModel);
           setLocalStorageArray("tool_names_" + String(internalId), data.tools, setToolNames);
           setLocalStorageValue("is_agent_template_" + String(internalId), true, setShowButton);
           setShowButton(true);
+          if(data.tools.includes("Knowledge Search") && data.knowledge){
+            setLocalStorageValue("agent_knowledge_" + String(internalId), (knowledge?.find((item) => item.id === data.knowledge)).name, setSelectedKnowledge);
+            setLocalStorageValue("agent_knowledge_id_" + String(internalId), data.knowledge, setSelectedKnowledgeId);
+          }
         })
         .catch((error) => {
           console.error('Error fetching template details:', error);
